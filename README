@@ -1,0 +1,24 @@
+		Freegears, a personal repo
+
+HOWTO USE
+---------
+  Just make, as you wished!
+
+    $ make clean
+    $ make
+
+Directories
+-----------
+  include/	- user-defined headers, some are exported from kernel
+  drivers/	- kernel module examples, e.g. some driver skeletons
+  memwatch/	- memwatch library
+  net/		- examples of Unix network programming
+  unix/		- UNIX API examples
+  util/		- some useful tools in user space
+
+
+Program
+-------
+  list_test.c 	- kernel linked list testing program
+  float_test.c	- floating benchmark test
+  poly.cpp	- A very simple example of C++ Polymorphism
