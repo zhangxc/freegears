@@ -1,3 +1,8 @@
+/* list.h - exported kernel header from linux-3.1.0 
+ * 
+ * (c) copyleft 2011, izhangxc@gmail.com
+ */
+
 #ifndef _LINUX_LIST_H
 #define _LINUX_LIST_H
 
@@ -5,6 +10,7 @@
 #include <linux/stddef.h>
 #include <linux/const.h>
 
+#include "fgkernel.h"
 #include "poison.h"
 
 struct list_head {
@@ -19,25 +25,6 @@ struct hlist_node {
 	struct hlist_node *next, **pprev;
 };
 
-#undef offsetof
-#ifdef __compiler_offsetof
-#define offsetof(TYPE,MEMBER) __compiler_offsetof(TYPE,MEMBER)
-#else
-#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
-#endif
-/**
- * container_of - cast a member of a structure out to the containing structure
- * @ptr:	the pointer to the member.
- * @type:	the type of the container struct this is embedded in.
- * @member:	the name of the member within the struct.
- *
- */
-#define container_of(ptr, type, member) ({			\
-	const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
-	(type *)( (char *)__mptr - offsetof(type,member) );})
-
-
-/* exported kernel header from here */
 
 /*
  * Simple doubly linked list implementation.

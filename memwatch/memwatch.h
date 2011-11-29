@@ -540,6 +540,7 @@ void* mwCalloc_( size_t, size_t );
 void  mwFree( void*, const char*, int );
 void  mwFree_( void* );
 char* mwStrdup( const char *, const char*, int );
+int mwFork(void);
 
 /*
 ** Enable/disable precompiler block
@@ -585,6 +586,7 @@ char* mwStrdup( const char *, const char*, int );
 #define CHECK_BUFFER(b) mwTestBuffer(__FILE__,__LINE__,b)
 #define MARK(p)         mwMark(p,#p,__FILE__,__LINE__)
 #define UNMARK(p)       mwUnmark(p,__FILE__,__LINE__)
+#define fork()		mwFork()
 
 #else /* MEMWATCH */
 
@@ -636,6 +638,7 @@ extern void mwDummyTraceFunction(const char *,...);
 #define mwRealloc_(p,n)     realloc(p,n)
 #define mwCalloc_(n,m)      calloc(n,m)
 #define mwFree_(p)          free(p)
+#define mwFork()	    fork()
 #define mwAssert(e,es,f,l)
 #define mwVerify(e,es,f,l)  (e)
 #define mwTrace             mwDummyTrace

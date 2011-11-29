@@ -859,6 +859,11 @@ void mwSetAriFunc( int (*func)(const char *) ) {
 /***********************************************************************
 ** Allocation handlers
 ***********************************************************************/
+int mwFork(void) {
+	if(mwLog)
+		fflush(mwLog);
+	return fork();
+}
 
 void* mwMalloc( size_t size, const char* file, int line) {
     size_t needed;

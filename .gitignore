@@ -1,4 +1,7 @@
-*.*
+# derived gitignore file from linux project 
+# 
+
+.*
 *.o
 *.o.*
 *.a
@@ -26,3 +29,8 @@ drivers/modules.order
 drivers/Module.symvers
 
 !.gitignore
+
+
+*.orig
+*~
+\#*#
