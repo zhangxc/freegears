@@ -1,6 +1,6 @@
 CFLAGS		+= -Os -Wall -fPIC
 CXXFLAGS	+= $(CFLAGS)
-LIBS_OBJS	= substr.o dlshared.o
+LIBS_OBJS	= substr.o dlshared.o config.o
 LIBFG		= libfg.so
 
 all: $(LIBFG)
