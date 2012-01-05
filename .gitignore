@@ -34,3 +34,5 @@ drivers/Module.symvers
 *.orig
 *~
 \#*#
+
+/cscope.*
