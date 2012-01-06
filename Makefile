@@ -1,14 +1,17 @@
 CC		:= gcc
 CXX		:= g++
-CFLAGS         := -Os -Wall -I./include 
+STRIP		:= strip
+CFLAGS		:= -Os -Wall -I./include
 CXXFLAGS	:= $(CFLAGS)
 LIBFLAGS	:= -L$(shell pwd)/lib -lfg -lm -ldl
 
 PROG		= list_test float_test poly dltest
 DIRS		= lib/ net/ unix/ utils/ memwatch/
 
-all: subdirs $(PROG)
-	
+# Default target starts here
+PHONY := _all
+_all: subdirs $(PROG)
+
 subdirs:
 	for dir in $(DIRS); do	\
 		(cd $$dir; make)	\
