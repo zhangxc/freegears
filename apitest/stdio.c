@@ -42,6 +42,6 @@ pr_stdio(const char *name, FILE *fp)
 		printf("line buffered");
 	else /* if neither of above */
 		printf("fully buffered");
-	printf(", buffer size = %ld\n", fp->_IO_buf_end - fp->_IO_buf_base);
+	printf(", buffer size = %d\n", fp->_IO_buf_end - fp->_IO_buf_base);
 }
 

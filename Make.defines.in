@@ -1,0 +1,18 @@
+# System = i686-linux
+
+CC := gcc
+CXX := g++
+RANLIB := ranlib
+STRIP := strip
+
+CFLAGS += -I../include -L../lib
+CXXFLAGS += $(CFLAGS)
+LIBFLAGS += -ldl -lfg -lbsd -lm -lpthread
+
+LIBS = libfg.so libdlshared.so
+
+LIBFG_OBJS = substr.o config.o abspath.o strbuf.o usage.o wrapper.o
+
+LIBS_OBJS = $(LIBFG_OBJS)
+
+CLEANFILES = *.o *.so *.a

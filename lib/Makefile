@@ -1,18 +1,27 @@
-CFLAGS		+= -Os -Wall -fPIC
-CXXFLAGS	+= $(CFLAGS)
-LIBS_OBJS	= substr.o dlshared.o config.o abspath.o strbuf.o usage.o wrapper.o
-LIBFG		= libfg.so
+include ../Make.defines.in
 
-all: $(LIBFG)
+TARGET	= libfg.so dlshared.so memwatch.so
 
-libfg.a: $(LIBS_OBJS)
+all: $(TARGET)
+
+libfg.a: $(LIBFG_OBJS)
 	ar rcs libfg.a $?
 	ranlib libfg.a
 
-# for dynamic link test
-libfg.so: $(LIBS_OBJS)
-	g++ -shared -o $@ $?
+libfg.so: $(LIBFG_OBJS)
+	gcc -shared -o $@ $? 
+	strip $@
+
+dlshared.so: dlshared.o
+	g++ -shared -o $@ $<
+	strip $@
+
+memwatch.o: memwatch.c
+	$(CC) -c -o $@ $< $(CFLAGS) -DMEMWATCH -DMW_STDIO
+	
+memwatch.so: memwatch.o
+	gcc -shared -o $@ $<
 	strip $@
 
 clean:
-	rm -f $(LIBS_OBJS) $(LIBFG) libfg.so
+	rm -f $(TARGET) $(CLEANFILES)

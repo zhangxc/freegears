@@ -1,35 +1,11 @@
-CC		:= gcc
-CXX		:= g++
-STRIP		:= strip
-CFLAGS		:= -Os -Wall -I./include
-CXXFLAGS	:= $(CFLAGS)
-LIBFLAGS	:= -L$(shell pwd)/lib -lfg -lm -ldl
+include ./Make.defines.in
 
-PROG		= list_test float_test poly dltest
-DIRS		= lib/ net/ unix/ utils/ memwatch/
-
-# Default target starts here
-PHONY := _all
-_all: subdirs $(PROG)
-
-subdirs:
-	for dir in $(DIRS); do	\
-		(cd $$dir; make)	\
-	done
-
-list_test: list_test.c
-
-float_test: float_test.c
-	$(CC) -o $@ $< $(LIBFLAGS)
-
-poly: poly.cpp
-
-# explicit dynamic link test, check lib/dlshared.cpp for details
-dltest: dltest.cpp lib/libfg.so
-	$(CXX) -o $@ $< $(LIBFLAGS)
+all:
+	@echo "Nothing to make in root directory"
+	@echo "Please read the README file to see what you got"
 
 clean:
-	for dir in $(DIRS); do	\
-		(cd $$dir; make $@)	\
-	done
-	rm -f $(PROG) *.o *~
+	rm -f $(CLEANFILES)
+
+distclean:
+	rm -f $(CLEANFILES) config.cache config.log config.status config.h Make.defines Makefile

@@ -1,25 +1,21 @@
-CFLAGS	+=
+include ../Make.defines.in
 
+TARGETS = bitreverse chksum 2byteswap 4byteswap seeker fft
 
-UTILS= 	bitreverse	\
-	chksum		\
-	2byteswap	\
-	4byteswap	\
-	seeker
-
-all: $(UTILS)
+all: $(TARGETS)
 
 bitreverse: bitreverse.c
 
 chksum: chksum.c
 
 2byteswap: 2byteswap.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
 
 4byteswap: 4byteswap.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
 
 seeker: seeker.c
 
+fft: fft.c
+	$(CC) $(CFLAGS) -o $@ $< $(LIBFLAGS)
+
 clean:
-	rm -f *.o $(UTILS)
+	rm -f $(TARGETS) $(CLEANFILES)
