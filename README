@@ -2,23 +2,33 @@
 
 HOWTO USE
 ---------
-  Just make, as you wished!
+  First of all, build the libraries for other applications
 
-    $ make clean
-    $ make
+	cd lib
+	make
+
+  And go on with any sub-directory to see what you got.
 
 Directories
 -----------
-  include/	- user-defined headers, some are exported from kernel
-  drivers/	- kernel module examples, e.g. some driver skeletons
-  memwatch/	- memwatch library
-  net/		- examples of Unix network programming
-  unix/		- UNIX API examples
-  util/		- some useful tools in user space
+  include		user-defined headers, some are exported from kernel
+  lib			library routines
+  apitest		UNIX API examples
+  fgtest		Self-testing utilities
+  drivers		kernel module examples, e.g. some driver skeletons
+  lang			intro codes of programming languages
+  socket		examples of Unix network programming
+  util			some useful tools in user space
 
 
-Program
--------
-  list_test.c 	- kernel linked list testing program
-  float_test.c	- floating benchmark test
-  poly.cpp	- A very simple example of C++ Polymorphism
+Libraries
+---------
+  abspath.c		from git-core
+  config.c		from git-core
+  strbuf.c		from git-core
+  substr.c
+  usage.c		from git-core
+  wrapper.c		from git-core
+
+  memwatch.c	from memwatch
+  dlshared.cpp

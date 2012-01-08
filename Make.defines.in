@@ -11,7 +11,7 @@ LIBFLAGS += -ldl -lfg -lbsd -lm -lpthread
 
 LIBS = libfg.so libdlshared.so
 
-LIBFG_OBJS = substr.o config.o abspath.o strbuf.o usage.o wrapper.o
+LIBFG_OBJS = config.o substr.o abspath.o strbuf.o usage.o wrapper.o
 
 LIBS_OBJS = $(LIBFG_OBJS)
 

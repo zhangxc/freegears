@@ -22,7 +22,7 @@ int main(void)
 
 	// Check parameters
 	printf("Loading shared lib...\n");
-	hdl = dlopen("./lib/libfg.so", RTLD_LAZY | RTLD_GLOBAL);
+	hdl = dlopen("../lib/dlshared.so", RTLD_LAZY | RTLD_GLOBAL);
 	if (NULL == hdl) {
 		fprintf(stderr, "%s\n", dlerror());
 		return 1;

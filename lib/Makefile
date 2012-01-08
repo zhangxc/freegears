@@ -1,5 +1,6 @@
 include ../Make.defines.in
 
+CFLAGS += -fPIC
 TARGET	= libfg.so dlshared.so memwatch.so
 
 all: $(TARGET)
@@ -9,7 +10,7 @@ libfg.a: $(LIBFG_OBJS)
 	ranlib libfg.a
 
 libfg.so: $(LIBFG_OBJS)
-	gcc -shared -o $@ $? 
+	gcc -shared -o $@ $? -lbsd
 	strip $@
 
 dlshared.so: dlshared.o
