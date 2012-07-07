@@ -5,9 +5,10 @@ CXX := g++
 RANLIB := ranlib
 STRIP := strip
 
-CFLAGS += -I../include -L../lib
+CFLAGS += -Wall -I../include
 CXXFLAGS += $(CFLAGS)
-LIBFLAGS += -ldl -lfg -lbsd -lm -lpthread
+LIBFLAGS += -ldl -lfg -lbsd -lm -lpthread -lmw -L../lib
+DBGFLAGS := -DMEMWATCH -DMW_STDIO
 
 LIBS = libfg.so libdlshared.so
 

@@ -1,7 +1,7 @@
 include ../Make.defines.in
 
 CFLAGS += -fPIC
-TARGET	= libfg.so dlshared.so memwatch.so
+TARGET	= libfg.so dlshared.so libmw.so
 
 all: $(TARGET)
 
@@ -20,7 +20,7 @@ dlshared.so: dlshared.o
 memwatch.o: memwatch.c
 	$(CC) -c -o $@ $< $(CFLAGS) -DMEMWATCH -DMW_STDIO
 	
-memwatch.so: memwatch.o
+libmw.so: memwatch.o
 	gcc -shared -o $@ $<
 	strip $@
 
