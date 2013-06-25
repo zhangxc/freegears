@@ -1,4 +1,4 @@
-Z#!/usr/bin/perl -w
+#!/usr/bin/perl -w
 
 use CGI qw/:standard/;
 

@@ -15,7 +15,7 @@ mwtest.o: mwtest.c
 
 mwtest: mwtest.o ../lib/libmw.so
 
-conftest: conftest.c
+conftest: conftest.c 
 	$(CC) -o $@ $< $(CFLAGS) $(LIBFLAGS)
 
 # unit test code
