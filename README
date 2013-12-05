@@ -11,24 +11,11 @@ HOWTO USE
 
 Directories
 -----------
-  include		user-defined headers, some are exported from kernel
+  app           applications
   lib			library routines
-  apitest		UNIX API examples
-  fgtest		Self-testing utilities
-  drivers		kernel module examples, e.g. some driver skeletons
-  lang			intro codes of programming languages
-  socket		examples of Unix network programming
-  util			some useful tools in user space
-
+  include		user-defined headers, some are exported from kernel
+  build         working directory for building systems
 
 Libraries
 ---------
-  abspath.c		from git-core
-  config.c		from git-core
-  strbuf.c		from git-core
-  substr.c
-  usage.c		from git-core
-  wrapper.c		from git-core
 
-  memwatch.c	from memwatch
-  dlshared.cpp

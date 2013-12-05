@@ -1,28 +1,45 @@
-include ../Make.defines.in
+#
+# Makefile of libfguitls
+#
 
-CFLAGS += -fPIC
-TARGET	= libfg.so dlshared.so libmw.so
+TOPDIR=../..
+EXTRA_CFLAGS=-fPIC
+EXTRA_CXXFLAGS=-fPIC
+include $(TOPDIR)/app/config.mk
 
-all: $(TARGET)
+TARGET=libfgutils.so libfgutils.a libmw.so dlshared.so
+LIBFGUTILS-objs	= abspath.o config.o strbuf.o usage.o wrapper.o eloop.o
+LIBMW-objs	= memwatch.o
+DLSHARED-objs	= dlshared.o
 
-libfg.a: $(LIBFG_OBJS)
-	ar rcs libfg.a $?
-	ranlib libfg.a
+.PHONY: all build install clean distclean
+all: build install
 
-libfg.so: $(LIBFG_OBJS)
-	gcc -shared -o $@ $? -lbsd
-	strip $@
+build: $(TARGET)
+
+libfgutils.a: $(LIBFGUTILS-objs)
+	$(AR) rcs libfg.a $?
+	$(RANLIB) libfg.a
+
+libfgutils.so: $(LIBFGUTILS-objs)
+	$(LDSHARED) -o $@ $? -lbsd
+	$(STRIP) $@
 
 dlshared.so: dlshared.o
-	g++ -shared -o $@ $<
-	strip $@
+	$(CXX) -shared -o $@ $<
+	$(STRIP) $@
 
 memwatch.o: memwatch.c
 	$(CC) -c -o $@ $< $(CFLAGS) -DMEMWATCH -DMW_STDIO
 	
 libmw.so: memwatch.o
-	gcc -shared -o $@ $<
-	strip $@
+	$(CXX) -shared -o $@ $<
+	$(STRIP) $@
+
+install:
 
 clean:
-	rm -f $(TARGET) $(CLEANFILES)
+	rm -f *.o $(TARGET)
+
+distclean: clean
+
