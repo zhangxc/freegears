@@ -2,7 +2,20 @@
  * Various trivial helper wrappers around standard functions
  */
 //#include "cache.h"
-#include "compat-util.h"
+#include "wrapper.h"
+#include "abspath.h"
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <linux/limits.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdarg.h>
+#include <errno.h>
+
 
 static void do_nothing(size_t size)
 {

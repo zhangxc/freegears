@@ -1,4 +1,14 @@
-#include "compat-util.h"
+#include "wrapper.h"
+#include "abspath.h"
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <linux/limits.h>
+#include <string.h>
+
 
 /*
  * Do not use this for inspecting *tracked* content.  When path is a

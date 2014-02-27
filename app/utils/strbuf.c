@@ -1,6 +1,17 @@
+#include "wrapper.h"
 #include "config.h"
-
 #include "strbuf.h"
+#include "utils.h"
+
+#include <linux/limits.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <errno.h>
+
 
 int prefixcmp(const char *str, const char *prefix)
 {

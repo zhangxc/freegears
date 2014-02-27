@@ -1,0 +1,8 @@
+mainmenu "platform configuration for Zoom Networks AP systems"
+
+source ../app/Wconfig
+
+menuconfig DEBUG
+        bool "System hacking"
+        default y
+

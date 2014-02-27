@@ -1,5 +1,5 @@
 /* conf.c
- * 
+ *
  * Configuration file sample:
  * [global]
  *   editor = vim
@@ -7,15 +7,25 @@
  * [user]
  *   name = Snake
  *   email = i@g.cn
- * 
+ *
  * Transforming the configration into variables:
  *   core.editor = vim
  *   core.prompt = false
  *   user.name = Snake
  *   user.email = i@g.cn
  */
+#include "wrapper.h"
 #include "config.h"
 #include "strbuf.h"
+
+#include <linux/limits.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <regex.h>
 
 static char *key;
 static int do_all;
@@ -694,7 +704,7 @@ struct lockfile {
 int fg_config_set_multivar(const char *key, const char *value,
 	const char *value_regex, int multi_replace)
 {
-	int fd = -1, in_fd; 
+	int fd = -1, in_fd;
 	int ret;
 	char *config_filename;
 	struct lockfile *lock = NULL;
@@ -868,7 +878,7 @@ int fg_config_set_multivar(const char *key, const char *value,
 		ret = -1;
 		goto out_free;
 	}
-	
+
 /*	if (commit_lock_file(lock) < 0) {
 		error("could not commit config file %s", config_filename);
 		ret = 4;

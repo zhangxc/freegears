@@ -1,0 +1,7 @@
+menu "Applications"
+
+config APP_utils
+	bool "libutils"
+	def_bool y
+
+endmenu

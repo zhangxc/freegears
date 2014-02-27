@@ -3,7 +3,13 @@
  *
  * Copyright (C) Linus Torvalds, 2005
  */
-#include "compat-util.h"
+#include "usage.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <stdarg.h>
 
 void vreportf(const char *prefix, const char *err, va_list params)
 {
