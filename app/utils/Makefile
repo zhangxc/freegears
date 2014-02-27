@@ -3,17 +3,25 @@
 #
 
 TOPDIR=../..
-EXTRA_CFLAGS=-fPIC
-EXTRA_CXXFLAGS=-fPIC
-include $(TOPDIR)/app/config.mk
-
-TARGET=libfgutils.so libfgutils.a libmw.so dlshared.so
-LIBFGUTILS-objs	= abspath.o config.o strbuf.o usage.o wrapper.o eloop.o
-LIBMW-objs	= memwatch.o
-DLSHARED-objs	= dlshared.o
+include $(TOPDIR)/build/.config
+include $(TOPDIR)/build/config.mk
 
 .PHONY: all build install clean distclean
 all: build install
+
+TARGET	= libfgutils.so libfgutils.a libmw.so dlshared.so
+CFLAGS	+= -fPIC
+CXXFLAGS+= -fPIC
+
+LIBFGUTILS-objs	= abspath.o config.o strbuf.o usage.o wrapper.o eloop.o \
+		hashtable.o crc32.o
+#		led.o wdog.o
+#
+LIBMW-objs	= memwatch.o
+
+CUNIT-objs	= cunit.o
+
+DLSHARED-objs	= dlshared.o
 
 build: $(TARGET)
 
@@ -39,7 +47,8 @@ libmw.so: memwatch.o
 install:
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o
 
 distclean: clean
+	rm -f $(TARGET)
 

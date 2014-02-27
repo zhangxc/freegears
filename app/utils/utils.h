@@ -1,5 +1,7 @@
 /* utils.h - Util API headers
  */
+#ifndef __UTIL_H__
+#define __UTIL_H__
 
 #include <stdint.h>
 #include <limits.h>
@@ -28,4 +30,7 @@
 
 #define alloc_nr(x) (((x)+16)*3/2)
 
+/* API references */
+
+#endif // __UTIL_H__
 

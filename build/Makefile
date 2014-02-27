@@ -1,7 +1,7 @@
 #
 # ZNAP mofi project
 #
-.PHONY=app
+.PHONY = app
 all: app
 
 # Makefile configuration
