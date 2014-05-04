@@ -1,5 +1,5 @@
-/* list.h - exported kernel header from linux-3.1.0 
- * 
+/* list.h - exported kernel header from linux-3.1.0
+ *
  * (c) copyleft 2011, izhangxc@gmail.com
  */
 
@@ -10,8 +10,17 @@
 #include <linux/stddef.h>
 #include <linux/const.h>
 
-#include "fgkernel.h"
-#include "poison.h"
+/*
+ * from poison.h
+ *
+ * These are non-NULL pointers that will result in page faults
+ * under normal circumstances, used to verify that nobody uses
+ * non-initialized list entries.
+ */
+#define POISON_POINTER_DELTA 0
+#define LIST_POISON1  ((void *) 0x00100100 + POISON_POINTER_DELTA)
+#define LIST_POISON2  ((void *) 0x00200200 + POISON_POINTER_DELTA)
+
 
 struct list_head {
 	struct list_head *next, *prev;
