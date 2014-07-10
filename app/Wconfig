@@ -1,7 +1,11 @@
 menu "Applications"
 
+comment "first-party libraries"
+
 config APP_utils
 	bool "libutils"
 	def_bool y
+
+comment "first-party applications"
 
 endmenu

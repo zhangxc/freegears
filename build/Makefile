@@ -2,7 +2,7 @@
 # ZNAP mofi project
 #
 .PHONY = app
-all: app
+all: build
 
 # Makefile configuration
 TOPDIR=..
@@ -14,7 +14,7 @@ include $(TOPDIR)/build/function.mk
 
 # targets in built-in rules 
 SUBFATHER=../
-SUBDIRS=app
+SUBDIRS=app rootfs
 OTHER_CMD_STOPED=y
 include $(TOPDIR)/build/rules.mk
 

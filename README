@@ -4,17 +4,25 @@ HOWTO USE
 ---------
   First of all, build the libraries for other applications
 
-	cd lib
+	cd build
+	make menuconfig
 	make
 
   And go on with any sub-directory to see what you got.
 
 Directories
 -----------
-  app           applications
-  lib			library routines
-  include		user-defined headers, some are exported from kernel
   build         working directory for building systems
+  tool		first-party host utilities
+  app           first-party applications
+  module	first-party kernel modules
+  linux		linux kernel
+  rootfs	all needed for a root file system
+  third		applications and kernel modules from third-party SDK
+  bin		auto-generated binaries
+  lib		auto-generated library routines
+  include	auto-generated C headers
+  target	auto-generated target directory
 
 Libraries
 ---------

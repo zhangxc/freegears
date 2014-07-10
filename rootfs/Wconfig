@@ -1,0 +1,66 @@
+menu "Software packages"
+
+comment "Open-source libraries"
+
+config PKG_zlib-1.2.8
+	bool "Library Z v1.2.8"
+
+config PKG_libatomic_ops-7.4.0
+	bool "Library Atomic Ops v7.4.0"
+	default y
+
+config PKG_libiconv-1.14
+	bool "Library ICONV v1.14"
+
+config PKG_pcre-8.13
+	bool "Library PCRE v8.13"
+
+config PKG_libxml2-2.6.23
+	bool "Library XML2 v2.6.23"
+
+comment "Open-source utilities"
+
+config PKG_wireless_tools.29
+	bool "Wireless tools v29"
+
+config PKG_dropbear-2011.54
+	bool "Dropbear SSH v2011.54"
+
+config PKG_rsyslog-5.8.0
+	bool "Rsyslog v5.8.0"
+
+config PKG_iproute2-2.6.31
+	bool "Iproute v2.6.31"
+
+config PKG_openssl-0.9.8g
+	bool "OpenSSL v0.9.8g"
+
+config PKG_curl-7.34.0
+	bool "Curl v7.34.0"
+
+config PKG_sqlite-autoconf-3070603
+	bool "Sqlite v3070603 (autoconf)"
+
+config PKG_wget-1.14
+	bool "WGet downloader v1.14"
+
+config PKG_ntp-4.2.6p4
+	bool "NTP daemon v4.2.6p4"
+
+config PKG_busybox-1.19.2
+	bool "Busybox v1.19.2"
+
+config PKG_iptables-1.4.9
+	bool "Iptables v1.4.9"
+
+config PKG_ebtables-v2.0.9-2
+	bool "Ebtables v2.0.9-2"
+
+config PKG_bridge-utils-0.9.5
+	bool "Bridge utilities v0.9.5"
+
+config PKG_php-5.4.20
+	bool "PHP v5.4.20"
+
+endmenu
+

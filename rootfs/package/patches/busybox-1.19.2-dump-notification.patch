@@ -1,0 +1,144 @@
+diff --git a/init/halt.c b/init/halt.c
+index 7974adb..cb7b677 100644
+--- a/init/halt.c
++++ b/init/halt.c
+@@ -94,6 +94,129 @@ static void write_wtmp(void)
+ #define write_wtmp() ((void)0)
+ #endif
+ 
++/*****************************************************************
++ ** 函数名: findPid
++ ** 输  入: const char* pidName
++ ** 输  出: pid_t
++ ** 描  述:
++ **      查找进程的pid
++ ** 全局变量:
++ ** 调用模块:
++ ** 作  者: 葛鑫
++ ** 日  期: 2014年04月07日
++ ** 修  改:
++
++ ** 日  期:
++ ******************************************************************/
++#define READ_BUF_SIZE	1024
++static pid_t findPid(const char* pidName)
++{
++    DIR *dir = NULL;
++    struct dirent *next;
++    FILE *status = NULL;
++    char filename[READ_BUF_SIZE] = { '\0' };
++    char buffer[READ_BUF_SIZE] = { '\0' };
++    char name[READ_BUF_SIZE] = { '\0' };
++    next = NULL;
++
++    dir = opendir("/proc");
++    if (!dir) {
++        return 0;
++    }
++
++    while ((next = readdir(dir)) != NULL) {
++        status = NULL;
++        memset(filename, 0, READ_BUF_SIZE);
++        memset(buffer, 0, READ_BUF_SIZE);
++        memset(name, 0, READ_BUF_SIZE);
++
++        /* Must skip ".." since that is outside /proc */
++        if (strcmp(next->d_name, "..") == 0)
++            continue;
++
++        /* If it isn't a number, we don't want it */
++        if (!isdigit(*next->d_name))
++            continue;
++
++        sprintf(filename, "/proc/%s/status", next->d_name);
++        if (!(status = fopen(filename, "r"))) {
++            continue;
++        }
++        if (fgets(buffer, READ_BUF_SIZE - 1, status) == NULL) {
++            fclose(status);
++            status = NULL;
++            continue;
++        }
++        fclose(status);
++        status = NULL;
++
++        /* Buffer should contain a string like "Name:   binary_name" */
++        sscanf(buffer, "%*s %s", name);
++        //DBG("name = %s\n", name);
++        if (strcmp(name, pidName) == 0) {
++            //	pidList=xrealloc( pidList, sizeof(pid_t) * (i+2));
++            closedir(dir);
++            dir = NULL;
++            return ((pid_t) strtol(next->d_name, NULL, 0));
++
++        }
++    }
++    closedir(dir);
++    dir = NULL;
++    if (strcmp(pidName, "init") == 0)
++        return 1;
++
++    return 0;
++}
++
++/*****************************************************************
++ ** 函数名: dumpFileNotification
++ ** 输  入: NONE
++ ** 输  出: NONE
++ ** 描  述:
++ **      通知znap_upgrade进程转储文件
++ ** 全局变量:
++ ** 调用模块:
++ ** 作  者: 葛鑫
++ ** 日  期: 2014年04月07日
++ ** 修  改:
++
++ ** 日  期:
++ ******************************************************************/
++static void dumpFileNotification(void)
++{
++    pid_t uiWget = 0;
++    uiWget = findPid("wget");
++    if(0 == uiWget)
++    {
++        return;
++    }
++
++    kill(uiWget, SIGTERM);
++    printf("Waiting for dump file!\n");
++    sleep(5);
++
++    return;
++}
++
++/*****************************************************************
++ ** 函数名: zoomCustomOperate
++ ** 输  入: NONE
++ ** 输  出: NONE
++ ** 描  述:
++ **      中太自定义操作
++ ** 全局变量:
++ ** 调用模块:
++ ** 作  者: 葛鑫
++ ** 日  期: 2014年04月07日
++ ** 修  改:
++
++ ** 日  期:
++ ******************************************************************/
++static void zoomCustomOperate(void)
++{
++    dumpFileNotification();
++}
+ 
+ int halt_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int halt_main(int argc UNUSED_PARAM, char **argv)
+@@ -114,6 +237,9 @@ int halt_main(int argc UNUSED_PARAM, char **argv)
+ 
+ 	/* Parse and handle arguments */
+ 	opt_complementary = "d+"; /* -d N */
++    /* 中太自定义操作 */
++    zoomCustomOperate();
++
+ 	/* We support -w even if !ENABLE_FEATURE_WTMP,
+ 	 * in order to not break scripts.
+ 	 * -i (shut down network interfaces) is ignored.

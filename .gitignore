@@ -16,12 +16,10 @@ modules.builtin
 *.elf
 *.bin
 *.gz
-*.bz2
 *.lzma
 *.xz
 *.lz4
 *.lzo
-*.patch
 *.gcno
 *.pyc
 *.pyo
@@ -29,6 +27,12 @@ modules.builtin
 #
 # Top-level generic files
 #
+/rootfs/package/archive
+/rootfs/package/build
+/bin
+/include
+/lib
+/target
 
 #
 # Debian directory (make deb-pkg)
@@ -49,7 +53,6 @@ modules.builtin
 patches-*
 
 # quilt's files
-patches
 series
 
 # cscope files
