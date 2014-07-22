@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <linux/limits.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -16,12 +17,11 @@
 #include <stdarg.h>
 #include <errno.h>
 
-
 static void do_nothing(size_t size)
 {
 }
 
-static void (*try_to_free_routine)(size_t size) = do_nothing;
+static void (*try_to_free_routine) (size_t size) = do_nothing;
 
 try_to_free_t set_try_to_free_routine(try_to_free_t routine)
 {
@@ -30,6 +30,35 @@ try_to_free_t set_try_to_free_routine(try_to_free_t routine)
 		routine = do_nothing;
 	try_to_free_routine = routine;
 	return old;
+}
+
+/*
+ * Copy src to string dst of size siz.  At most siz-1 characters
+ * will be copied.  Always NUL terminates (unless siz == 0).
+ * Returns strlen(src); if retval >= siz, truncation occurred.
+ */
+ssize_t xstrlcpy(char *dst, const char *src, ssize_t siz)
+{
+	register char *d = dst;
+	register const char *s = src;
+	register size_t n = siz;
+
+	/* Copy as many bytes as will fit */
+	if (n != 0 && --n != 0) {
+		do {
+			if ((*d++ = *s++) == 0)
+				break;
+		} while (--n != 0);
+	}
+
+	/* Not enough room in dst, add NUL and traverse rest of src */
+	if (n == 0) {
+		if (siz != 0)
+			*d = '\0';	/* NUL-terminate dst */
+		while (*s++) ;
+	}
+
+	return (s - src - 1);	/* count does not include NUL */
 }
 
 char *xstrdup(const char *str)
@@ -55,8 +84,7 @@ void *xmalloc(size_t size)
 		if (!ret && !size)
 			ret = malloc(1);
 		if (!ret)
-			die("Out of memory, malloc failed (tried to allocate %lu bytes)",
-			    (unsigned long)size);
+			die("Out of memory, malloc failed (tried to allocate %lu bytes)", (unsigned long)size);
 	}
 #ifdef XMALLOC_POISON
 	memset(ret, 0xA5, size);
@@ -70,7 +98,7 @@ void *xmallocz(size_t size)
 	if (unsigned_add_overflows(size, 1))
 		die("Data too large to fit into virtual memory space.");
 	ret = xmalloc(size + 1);
-	((char*)ret)[size] = 0;
+	((char *)ret)[size] = 0;
 	return ret;
 }
 
@@ -213,7 +241,7 @@ int xmkstemp(char *template)
 {
 	int fd;
 	char origtemplate[PATH_MAX];
-	strlcpy(origtemplate, template, sizeof(origtemplate));
+	xstrlcpy(origtemplate, template, sizeof(origtemplate));
 
 	fd = mkstemp(template);
 	if (fd < 0) {
@@ -226,7 +254,7 @@ int xmkstemp(char *template)
 		nonrelative_template = absolute_path(template);
 		errno = saved_errno;
 		die_errno("Unable to create temporary file '%s'",
-			nonrelative_template);
+			  nonrelative_template);
 	}
 	return fd;
 }
@@ -262,7 +290,10 @@ int git_mkstemps(char *path, size_t len, const char *template, int suffix_len)
 		errno = ENAMETOOLONG;
 		return -1;
 	}
+#if _BSD_SOURCE || _SVID_SOURCE
 	return mkstemps(path, suffix_len);
+#else
+#endif
 }
 
 /* Adapted from libiberty's mkstemp.c. */
@@ -273,9 +304,8 @@ int git_mkstemps(char *path, size_t len, const char *template, int suffix_len)
 int git_mkstemps_mode(char *pattern, int suffix_len, int mode)
 {
 	static const char letters[] =
-		"abcdefghijklmnopqrstuvwxyz"
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		"0123456789";
+	    "abcdefghijklmnopqrstuvwxyz"
+	    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "0123456789";
 	static const int num_letters = 62;
 	uint64_t value;
 	struct timeval tv;
@@ -300,17 +330,23 @@ int git_mkstemps_mode(char *pattern, int suffix_len, int mode)
 	 * Try TMP_MAX different filenames.
 	 */
 	gettimeofday(&tv, NULL);
-	value = ((size_t)(tv.tv_usec << 16)) ^ tv.tv_sec ^ getpid();
+	value = ((size_t) (tv.tv_usec << 16)) ^ tv.tv_sec ^ getpid();
 	template = &pattern[len - 6 - suffix_len];
 	for (count = 0; count < TMP_MAX; ++count) {
 		uint64_t v = value;
 		/* Fill in the random bits. */
-		template[0] = letters[v % num_letters]; v /= num_letters;
-		template[1] = letters[v % num_letters]; v /= num_letters;
-		template[2] = letters[v % num_letters]; v /= num_letters;
-		template[3] = letters[v % num_letters]; v /= num_letters;
-		template[4] = letters[v % num_letters]; v /= num_letters;
-		template[5] = letters[v % num_letters]; v /= num_letters;
+		template[0] = letters[v % num_letters];
+		v /= num_letters;
+		template[1] = letters[v % num_letters];
+		v /= num_letters;
+		template[2] = letters[v % num_letters];
+		v /= num_letters;
+		template[3] = letters[v % num_letters];
+		v /= num_letters;
+		template[4] = letters[v % num_letters];
+		v /= num_letters;
+		template[5] = letters[v % num_letters];
+		v /= num_letters;
 
 		fd = open(pattern, O_CREAT | O_EXCL | O_RDWR, mode);
 		if (fd > 0)
@@ -348,7 +384,7 @@ int xmkstemp_mode(char *template, int mode)
 {
 	int fd;
 	char origtemplate[PATH_MAX];
-	strlcpy(origtemplate, template, sizeof(origtemplate));
+	xstrlcpy(origtemplate, template, sizeof(origtemplate));
 
 	fd = git_mkstemp_mode(template, mode);
 	if (fd < 0) {
@@ -361,7 +397,7 @@ int xmkstemp_mode(char *template, int mode)
 		nonrelative_template = absolute_path(template);
 		errno = saved_errno;
 		die_errno("Unable to create temporary file '%s'",
-			nonrelative_template);
+			  nonrelative_template);
 	}
 	return fd;
 }

@@ -1,6 +1,7 @@
 /* usage.h
  */
 #include <stdio.h>
+#include <stdarg.h>
 
 #if __HP_cc >= 61000
 #define NORETURN __attribute__((noreturn))

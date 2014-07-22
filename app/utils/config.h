@@ -1,6 +1,7 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#include "usage.h"
 
 #define DEFAULT_CONF_FILE "user.conf"
 #define MAXNAME (256)

@@ -4,6 +4,7 @@
 /* See Documentation/technical/api-strbuf.txt */
 
 #include <assert.h>
+#include <stdarg.h>
 
 #define alloc_nr(x) (((x)+16)*3/2)
 

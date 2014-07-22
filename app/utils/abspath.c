@@ -1,5 +1,6 @@
 #include "wrapper.h"
 #include "abspath.h"
+#include "usage.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -45,7 +46,7 @@ const char *real_path(const char *path)
 	if (path == buf || path == next_buf)
 		return path;
 
-	if (strlcpy(buf, path, PATH_MAX) >= PATH_MAX)
+	if (xstrlcpy(buf, path, PATH_MAX) >= PATH_MAX)
 		die ("Too long path: %.*s", 60, path);
 
 	while (depth--) {
@@ -115,7 +116,7 @@ static const char *get_pwd_cwd(void)
 		if (!stat(pwd, &pwd_stat) &&
 		    pwd_stat.st_dev == cwd_stat.st_dev &&
 		    pwd_stat.st_ino == cwd_stat.st_ino) {
-			strlcpy(cwd, pwd, PATH_MAX);
+			xstrlcpy(cwd, pwd, PATH_MAX);
 		}
 	}
 	return cwd;
@@ -133,7 +134,7 @@ const char *absolute_path(const char *path)
 	static char buf[PATH_MAX + 1];
 
 	if (is_absolute_path(path)) {
-		if (strlcpy(buf, path, PATH_MAX) >= PATH_MAX)
+		if (xstrlcpy(buf, path, PATH_MAX) >= PATH_MAX)
 			die("Too long path: %.*s", 60, path);
 	} else {
 		size_t len;

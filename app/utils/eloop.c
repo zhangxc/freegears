@@ -304,7 +304,7 @@ void eloop_run(void)
 void *eloop_run_thread(void *arg)
 {
     fd_set rfds;
-    int max_fd, res;
+    int max_fd = 0, res;
     struct timeval tv;
 
     pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);

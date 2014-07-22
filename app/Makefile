@@ -14,12 +14,6 @@ SUBDIRS= $(shell grep ^CONFIG_APP_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_A
 OTHER_CMD_STOPED=y
 include $(TOPDIR)/build/rules.mk
 
-#
-# overrides the rules in rules.mk
-#
-.PHONY: build clean distclean $(SUBDIRS)
-build: $(SUBDIRS)
-
 # app
 # libraries
 # python package

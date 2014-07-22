@@ -1,10 +1,11 @@
 #
-CFG_DEFAULT_TARGET	= $(shell grep ^CONFIG_TARGET_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_TARGET_//" | sed "s/=y//")
-CFG_DEFAULT_ARCH	= $(shell grep ^CONFIG_ARCH_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_ARCH_//" | sed "s/=y//")
+CFG_DEF_TARGET		= $(shell grep ^CONFIG_TARGET_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_TARGET_//" | sed "s/=y//")
+CFG_DEF_ARCH		= $(shell grep ^CONFIG_ARCH_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_ARCH_//" | sed "s/=y//")
 CFG_TOOL_PREFIX		= $(shell grep ^CONFIG_TOOLPREFIX_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_TOOLPREFIX_//" | sed "s/=y//")
 
-TARGET			= $(shell echo $(CFG_DEFAULT_TARGET) | tr [:upper:] [:lower:])
-ARCH			= $(shell echo $(CFG_DEFAULT_ARCH) | tr [:upper:] [:lower:])
+CFG_DEFAULT_TARGET	= $(shell echo $(CFG_DEF_TARGET) | tr [:upper:] [:lower:])
+CFG_DEFAULT_ARCH	= $(shell echo $(CFG_DEF_ARCH) | tr [:upper:] [:lower:])
+ARCH			= $(CFG_DEFAULT_ARCH)
 ifeq ($(CFG_TOOL_PREFIX), MIPS_UCLIBC_LINUX)
   CFG_TARGET_HOST	= mips-linux
   CROSS_COMPILE 	= $(CFG_TARGET_HOST)-
@@ -27,7 +28,7 @@ CFG_BIN_DIR	= $(TOPDIR)/bin
 CFG_INC_DIR	= $(TOPDIR)/include
 CFG_LIB_DIR	= $(TOPDIR)/lib
 CFG_TARGET_DIR	= $(TOPDIR)/target
-CFG_TARGET_ROOT	= $(CFG_TARGET_DIR)/$(TARGET)/rootfs
+CFG_TARGET_ROOT	= $(CFG_TARGET_DIR)/$(CFG_DEFAULT_TARGET)/rootfs
 
 CFG_PREFIX_DIR	= $(CFG_TARGET_DIR)
 CFG_ROOT_DIR	= $(CFG_TARGET_DIR)
