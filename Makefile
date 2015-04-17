@@ -50,7 +50,7 @@ menuconfig: scripts/config/mconf FORCE
 distclean:
 	$(MAKE) -C app clean
 	$(MAKE) -C package clean
-	$(RM) -r build staging target
+	$(RM) -r build staging target .config
 	$(MAKE) -C scripts/config clean
 
 #

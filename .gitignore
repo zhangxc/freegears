@@ -27,11 +27,8 @@ modules.builtin
 #
 # Top-level generic files
 #
-/rootfs/package/archive
-/rootfs/package/build
-/bin
-/include
-/lib
+/build
+/staging
 /target
 
 #
