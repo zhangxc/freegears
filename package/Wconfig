@@ -1,0 +1,57 @@
+menu "Software packages"
+
+comment "Open-source libraries"
+
+config PKG_ZLIB
+	bool "Library Z"
+
+config PKG_LIBICONV
+	bool "Library ICONV"
+
+config PKG_PCRE
+	bool "Library PCRE"
+
+config PKG_LIBXML2
+	bool "Library XML2"
+
+comment "Open-source utilities"
+
+config PKG_WIRELESSTOOLS
+	bool "Wireless tools"
+
+config PKG_DROPBEAR
+	bool "Dropbear SSH"
+
+config PKG_RSYSLOG
+	bool "Rsyslog implementation"
+
+config PKG_IPROUTE2
+	bool "Iproute version 2"
+
+config PKG_OPENSSL
+	bool "OpenSSL toolkit"
+
+config PKG_CURL
+	bool "Curl utility and library"
+
+config PKG_NTP
+	bool "NTP service implementation"
+
+config PKG_BUSYBOX
+	bool "Busybox toolkits"
+	default y
+
+config PKG_IPTABLES
+	bool "Iptables utility"
+
+config PKG_EBTABLES
+	bool "Ebtables utility"
+
+config PKG_BRIDGE_UTILS
+	bool "802.3d bridge utilities"
+
+config PKG_PHP5
+	bool "PHP version 5"
+
+endmenu
+

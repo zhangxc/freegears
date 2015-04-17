@@ -1,58 +1,36 @@
-#
-# Makefile of libfguitls
-#
-#
-# Ambigious APIs implementation:
-#
-#   strlcpy	libbsd, -lbsd
-#   mkstemp	_BSD_SOURCE || _SVID_SOURCE
-#
-TOPDIR=../..
-include $(TOPDIR)/build/.config
-include $(TOPDIR)/build/config.mk
+TOPDIR=$(CURDIR)/../..
+include $(TOPDIR)/include/app.mk
 
-.PHONY: all build install clean distclean
-all: build install
-
-TARGET	= libfgutils.so
 CFLAGS	+= -fPIC
 CXXFLAGS+= -fPIC
 LDLIBS	+= -lrt
+TARGET	= libfgutils.so libmw.so
 
-LIBFGUTILS-objs	= abspath.o config.o strbuf.o usage.o wrapper.o eloop.o \
+define Package/libutils
+PKG_NAME	:= libutils
+PKG_VERSION	:= $(CFG_IMG_VER)
+TITLE		:= Library of massive compact utilities
+endef
+
+define Package/libutils/targets
+libfgutils.so: abspath.o config.o strbuf.o usage.o wrapper.o eloop.o \
 		hashtable.o crc32.o
-#		led.o wdog.o
-#
-LIBMW-objs	= memwatch.o
-
-CUNIT-objs	= cunit.o
-
-DLSHARED-objs	= dlshared.o
-
-build: $(TARGET)
-
-libfgutils.a: $(LIBFGUTILS-objs)
-	$(AR) rcs libfg.a $?
-	$(RANLIB) libfg.a
-
-libfgutils.so: $(LIBFGUTILS-objs)
-	$(LDSHARED) -o $@ $? $(LDFLAGS) $(LDLIBS)
+	$(LDSHARED) -o $$@ $$^ $(LDFLAGS) $(LOADLIBES)
 
 dlshared.so: dlshared.o
-	$(CXX) -shared -o $@ $<
+	$(LDSHARED) -o $$@ $$<
 
 memwatch.o: memwatch.c
-	$(CC) -c -o $@ $< $(CFLAGS) -DMEMWATCH -DMW_STDIO
+	$(CC) -c -o $$@ $$< $(CFLAGS) -DMEMWATCH -DMW_STDIO
 	
 libmw.so: memwatch.o
-	$(CXX) -shared -o $@ $<
+	$(CXX) -shared -o $$@ $$<
+endef
 
-install:
-	install -s --strip-program=$(STRIP) libfgutils.so $(CFG_TARGET_ROOT)/usr/lib
+define Package/libutils/install
+	$(INSTALL_DIR) $(CFG_TARGET_ROOT)/usr/lib
+	$(INSTALL_BIN) libfgutils.so $(CFG_TARGET_ROOT)/usr/lib
+endef
 
-clean:
-	rm -f *.o
-
-distclean: clean
-	rm -f $(TARGET)
+$(eval $(call BuildApp,libutils))
 

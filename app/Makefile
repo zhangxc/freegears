@@ -2,19 +2,13 @@
 # third-party softwares
 #
 TOPDIR=..
-include $(TOPDIR)/build/.config
-include $(TOPDIR)/build/config.mk
-
-# make function
-include $(TOPDIR)/build/function.mk
+include $(TOPDIR)/.config
+include $(TOPDIR)/include/config.mk
 
 # targets in built-in rules
 SUBFATHER=
-SUBDIRS= $(shell grep ^CONFIG_APP_.*=y $(TOPDIR)/build/.config | sed "s/CONFIG_APP_//" | sed "s/=y//")
+SUBDIRS= $(shell grep ^CONFIG_APP_.*=y $(TOPDIR)/.config | sed "s/CONFIG_APP_//" | sed "s/=y//")
 OTHER_CMD_STOPED=y
-include $(TOPDIR)/build/rules.mk
-
-# app
-# libraries
-# python package
+include $(TOPDIR)/include/function.mk
+include $(TOPDIR)/include/rules.mk
 

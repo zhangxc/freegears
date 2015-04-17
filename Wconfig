@@ -1,0 +1,52 @@
+mainmenu "platform configuration for Zoom Networks AP systems"
+
+config ARCH_X86
+	bool
+
+config ARCH_ARM
+	bool
+
+config ARCH_MIPS
+	bool
+
+config TOOLPREFIX_X86
+	bool
+
+config TOOLPREFIX_MIPS_UCLIBC_LINUX
+	bool
+
+choice
+	prompt "Default target"
+	default UNITY
+
+config TARGET_UNITY
+	bool "Unity - Beyond infinity"
+	select ARCH_X86
+	select TOOLPREFIX_X86
+	help
+	  Here comes Buzz Lightyear!
+
+config TARGET_APACHE_PEAK
+	bool "Apache Peak"
+	select ARCH_MIPS
+	select TOOLPREFIX_MIPS_UCLIBC_LINUX
+	help
+	  Aruba Apache Peak targets for Atheros AR7240
+
+config TARGET_MISSION_PEAK
+	bool "Mission Peak"
+	select ARCH_MIPS
+	select TOOLPREFIX_MIPS_UCLIBC_LINUX
+	help
+	  Aruba Apache Peak targets for Atheros AR7161
+
+endchoice
+
+source app/Wconfig
+
+source package/Wconfig
+
+menuconfig DEBUG
+        bool "System hacking"
+        default y
+

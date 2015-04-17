@@ -6,10 +6,14 @@
 #ifndef _LINUX_LIST_H
 #define _LINUX_LIST_H
 
-#include <linux/types.h>
-#include <linux/stddef.h>
-#include <linux/const.h>
+#include <stddef.h>
 
+#ifndef container_of
+#define container_of(ptr, type, member) ({			\
+	const typeof( ((type *)0)->member ) *__mptr = (ptr);	\
+	(type *)( (char *)__mptr - offsetof(type,member) );})
+
+#endif
 /*
  * from poison.h
  *
