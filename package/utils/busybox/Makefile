@@ -1,5 +1,5 @@
-# WE ARE NOW AT $(TOPDIR)/rootfs/package/build
 TOPDIR=$(CURDIR)/../../..
+include $(TOPDIR)/include/config.mk
 include $(TOPDIR)/include/package.mk
 
 LOADLIBES	+= -lm

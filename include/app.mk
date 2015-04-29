@@ -1,38 +1,19 @@
-include $(TOPDIR)/include/config.mk
+include $(TOPDIR)/include/depends.mk
 #include $(TOPDIR)/include/ipkg.mk
 
-export SH_FUNC	:=. $(TOPDIR)/scripts/shell.sh;
+INSTALL_BIN	= install -m755 -s --strip-program=$(STRIP)
 
 PKG_BUILD_DIR	= $(CURDIR)
 PKG_INS_DIR	= $(CURDIR)/ipkg-install
 STAMP_BUILT	= $(PKG_BUILD_DIR)/.built
 STAMP_INSTALLED	= $(CFG_STAMP_DIR)/.$(PKG_NAME)_installed
 
-CC		= $(CROSS_COMPILE)gcc
-CPP		= $(CROSS_COMPILE)cpp
-CXX		= $(CROSS_COMPILE)g++
-CXXCPP		= $(CROSS_COMPILE)cpp -x c++
-YACC		= $(CROSS_COMPILE)yacc
-LD		= $(CROSS_COMPILE)ld
-LDSHARED	= $(CROSS_COMPILE)gcc -shared
-NM		= $(CROSS_COMPILE)nm
-AR		= $(CROSS_COMPILE)ar
-STRIP		= $(CROSS_COMPILE)strip
-RANLIB		= $(CROSS_COMPILE)ranlib
-
-CFLAGS		= $(CFG_TARGET_CFLAGS) -DCFG_VERSION_CODE=$(CFG_IMG_VERCODE) \
+TARGET_CFLAGS	= $(CFG_TARGET_CFLAGS) -DCFG_VERSION_CODE=$(CFG_IMG_VERCODE) \
 		  $(CFG_TARGET_OPTIMIZATION) -Wall \
-		  -I$(CFG_STG_INC_DIR)
-CPPFLAGS	=
-CXXFLAGS	= $(CFLAGS)
-YFLAGS		=
-LDFLAGS		= -L$(CFG_STG_LIB_DIR)
-LOADLIBES	=
+		  -I$(CFG_STG_DIR)/$(CFG_DEFAULT_TARGET)/include
+TARGET_CXXFLAGS	= $(TARGET_CFLAGS)
+TARGET_LDFLAGS	= -L$(CFG_STG_DIR)/$(CFG_DEFAULT_TARGET)/lib
 
-HOSTCC		= gcc
-HOSTCXX		= g++
-HOSTCFLAGS	= -Os -Wall
-INSTALL_BIN	= install -m755 -s --strip-program=$(STRIP)
 
 define Package/Default
 CONFIGFILE:=
@@ -74,6 +55,8 @@ all: compile install
 $(STAMP_BUILT): $(TARGET)
 	touch $$@
 compile: $(STAMP_BUILT)
+%.o: %.c
+	$(TARGET_CC) -c -o $$@ $$< $(TARGET_CFLAGS)
 clean:
 	$(RM) *.o $(STAMP_BUILT)
 distclean: clean

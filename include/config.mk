@@ -6,36 +6,23 @@ CFG_TOOL_PREFIX		= $(shell grep ^CONFIG_TOOLPREFIX_.*=y $(TOPDIR)/.config | sed 
 
 CFG_DEFAULT_TARGET	= $(shell echo $(CFG_DEF_TARGET) | tr [:upper:] [:lower:])
 CFG_DEFAULT_ARCH	= $(shell echo $(CFG_DEF_ARCH) | tr [:upper:] [:lower:])
-ARCH			= $(CFG_DEFAULT_ARCH)
-ifeq ($(CFG_TOOL_PREFIX), MIPS_UCLIBC_LINUX)
-  CFG_TARGET_HOST	= mips-linux
-  CROSS_COMPILE 	= $(CFG_TARGET_HOST)-
-else
-  ifeq ($(CFG_TOOL_PREFIX), ARM_GLIBC_LINUX)
-    CFG_TARGET_HOST	= arm-hisiv200-linux
-    CROSS_COMPILE 	= $(CFG_TARGET_HOST)-
-  else
-    CFG_TARGET_HOST	= $(shell gcc -dumpmachine)
-    CROSS_COMPILE 	=
-  endif
-endif
 
 #
-CFG_BUILD_DIR	= $(TOPDIR)/build/$(CFG_DEFAULT_TARGET)
 CFG_TOOL_DIR	= $(TOPDIR)/tool
 CFG_APP_DIR	= $(TOPDIR)/app
 CFG_MOD_DIR	= $(TOPDIR)/module
 CFG_BIN_DIR	= $(TOPDIR)/bin
-CFG_STG_DIR	= $(TOPDIR)/staging
-CFG_STG_BIN_DIR	= $(CFG_STG_DIR)/bin
-CFG_STG_INC_DIR	= $(CFG_STG_DIR)/include
-CFG_STG_LIB_DIR	= $(CFG_STG_DIR)/lib
-CFG_TARGET_DIR	= $(TOPDIR)/target/$(CFG_DEFAULT_TARGET)
-CFG_TARGET_ROOT	= $(CFG_TARGET_DIR)/rootfs
-CFG_STAMP_DIR	= $(CFG_TARGET_DIR)/stamp
+CFG_DL_DIR	= $(TOPDIR)/dl
 
-CFG_PREFIX_DIR	= $(CFG_TARGET_DIR)
-CFG_ROOT_DIR	= $(CFG_TARGET_DIR)
+CFG_BUILD_DIR	= $(TOPDIR)/build
+CFG_STG_DIR	= $(TOPDIR)/staging
+CFG_TARGET_DIR	= $(TOPDIR)/target
+HOST_BUILD_DIR	= $(CFG_BUILD_DIR)/host
+HOST_STG_DIR	= $(CFG_STG_DIR)/host
+HOST_TARGET_DIR	= $(CFG_TARGET_DIR)/host
+TARGET_BUILD_DIR= $(CFG_BUILD_DIR)/$(CFG_DEFAULT_TARGET)
+TARGET_STG_DIR	= $(CFG_STG_DIR)/$(CFG_DEFAULT_TARGET)
+TARGET_DIR	= $(CFG_TARGET_DIR)/$(CFG_DEFAULT_TARGET)
 
 # builtin variables
 AR		:= ar
@@ -58,51 +45,71 @@ INSTALL_DIR	:= install -d -m0755
 INSTALL_DATA	:= install -m0644
 INSTALL_CONF	:= install -m0600
 
-HOSTAS		:= as
-HOSTCC		:= gcc
-HOSTCXX		:= g++
-HOSTCPP		:= $(HOSTCC) -E
-HOSTLD		:= ld
-HOSTFC		:= f77
-HOSTM2C		:= m2c
-HOSTPC		:= pc
-HOSTNM		:= nm
-HOSTSTRIP	:= strip
-HOSTOBJCOPY	:= objcopy
-HOSTOBJDUMP	:= objdump
-HOSTRANLIB	:= ranlib
-HOSTLDSHARED	:= gcc -shared
+# host variables
+HOST_OS		= $(shell uname)
+HOST_ARCH	= $(shell uname -m)
+HOST_NAME	= $(shell gcc -dumpmachine)
 
-HOSTASFLAGS	=
-HOSTCFLAGS	= -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
-HOSTCXXFLAGS	= -O2
-HOSTCPPFLAGS	=
-HOSTLDFLAGS	=
-HOSTLDLIBS	=
-HOSTFFLAGS	=
-HOSTPFLAGS	=
+HOST_AS		:= as
+HOST_CC		:= gcc
+HOST_CXX	:= g++
+HOST_CPP	:= $(HOST_CC) -E
+HOST_LD		:= ld
+HOST_FC		:= f77
+HOST_M2C	:= m2c
+HOST_PC		:= pc
+HOST_NM		:= nm
+HOST_STRIP	:= strip
+HOST_OBJCOPY	:= objcopy
+HOST_OBJDUMP	:= objdump
+HOST_RANLIB	:= ranlib
+HOST_LDSHARED	:= gcc -shared
 
-AS		= $(CROSS_COMPILE)as
-CC		= $(CROSS_COMPILE)gcc
-CXX		= $(CROSS_COMPILE)g++
-CPP		= $(CC) -E
-LD		= $(CROSS_COMPILE)ld
-FC		= $(CROSS_COMPILE)f77
-M2C		= $(CROSS_COMPILE)m2c
-PC		= $(CROSS_COMPILE)pc
-NM		= $(CROSS_COMPILE)nm
-STRIP		= $(CROSS_COMPILE)strip
-OBJCOPY		= $(CROSS_COMPILE)objcopy
-OBJDUMP		= $(CROSS_COMPILE)objdump
-RANLIB		= $(CROSS_COMPILE)ranlib
-LDSHARED	= $(CROSS_COMPILE)gcc -shared
+HOST_ASFLAGS	:=
+HOST_CFLAGS	:= -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
+HOST_CXXFLAGS	:= -O2
+HOST_CPPFLAGS	:=
+HOST_LDFLAGS	:=
+HOST_LDLIBS	:=
+HOST_FFLAGS	:=
+HOST_PFLAGS	:=
 
-ASFLAGS		=
-CFLAGS		= $(HOSTCFLAGS)
-CXXFLAGS	=
-CPPFLAGS	=
-LDFLAGS		=
-LDLIBS		=
-FFLAGS		=
-PFLAGS		=
+# target variables
+TARGET_ARCH		= $(CFG_DEFAULT_ARCH)
+ifeq ($(CFG_TOOL_PREFIX), MIPS_UCLIBC_LINUX)
+  TARGET_HOST		= mips-linux
+  CROSS 		= $(TARGET_HOST)-
+else
+  ifeq ($(CFG_TOOL_PREFIX), ARM_GLIBC_LINUX)
+    TARGET_HOST		= arm-hisiv200-linux
+    CROSS 		= $(TARGET_HOST)-
+  else
+    TARGET_HOST		= $(shell gcc -dumpmachine)
+    CROSS 		=
+  endif
+endif
+
+TARGET_AS	:= $(CROSS)as
+TARGET_CC	:= $(CROSS)gcc
+TARGET_CXX	:= $(CROSS)g++
+TARGET_CPP	:= $(TARGET_CC) -E
+TARGET_LD	:= $(CROSS)ld
+TARGET_FC	:= $(CROSS)f77
+TARGET_M2C	:= $(CROSS)m2c
+TARGET_PC	:= $(CROSS)pc
+TARGET_NM	:= $(CROSS)nm
+TARGET_STRIP	:= $(CROSS)strip
+TARGET_OBJCOPY	:= $(CROSS)objcopy
+TARGET_OBJDUMP	:= $(CROSS)objdump
+TARGET_RANLIB	:= $(CROSS)ranlib
+TARGET_LDSHARED	:= $(CROSS)gcc -shared
+
+TARGET_ASFLAGS	:=
+TARGET_CFLAGS	:= $(HOST_CFLAGS)
+TARGET_CXXFLAGS	:=
+TARGET_CPPFLAGS	:=
+TARGET_LDFLAGS	:=
+TARGET_LDLIBS	:=
+TARGET_FFLAGS	:=
+TARGET_PFLAGS	:=
 

@@ -1,4 +1,5 @@
-package-$(CONFIG_PKG_BASEFILES)		+= basefiles
+package-y				+= base-files
+package-y				+= system/opkg
 package-$(CONFIG_PKG_ZLIB)		+= libs/zlib
 package-$(CONFIG_PKG_OPENSSL)		+= libs/openssl
 package-$(CONFIG_PKG_JSONC)		+= libs/libjson-c

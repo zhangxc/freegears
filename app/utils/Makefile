@@ -1,10 +1,11 @@
 TOPDIR=$(CURDIR)/../..
+include $(TOPDIR)/include/config.mk
 include $(TOPDIR)/include/app.mk
 
-CFLAGS	+= -fPIC
-CXXFLAGS+= -fPIC
-LDLIBS	+= -lrt
-TARGET	= libfgutils.so libmw.so
+TARGET_CFLAGS	+= -fPIC
+TARGET_CXXFLAGS	+= -fPIC
+TARGET_LDLIBS	+= -lrt
+TARGET		= libfgutils.so libmw.so
 
 define Package/libutils
 PKG_NAME	:= libutils
@@ -15,16 +16,16 @@ endef
 define Package/libutils/targets
 libfgutils.so: abspath.o config.o strbuf.o usage.o wrapper.o eloop.o \
 		hashtable.o crc32.o
-	$(LDSHARED) -o $$@ $$^ $(LDFLAGS) $(LOADLIBES)
+	$(TARGET_LDSHARED) -o $$@ $$^ $(TARGET_LDFLAGS) $(TARGET_LOADLIBES)
 
 dlshared.so: dlshared.o
-	$(LDSHARED) -o $$@ $$<
+	$(TARGET_LDSHARED) -o $$@ $$<
 
 memwatch.o: memwatch.c
-	$(CC) -c -o $$@ $$< $(CFLAGS) -DMEMWATCH -DMW_STDIO
+	$(TARGET_CC) -c -o $$@ $$< $(TARGET_CFLAGS) -DMEMWATCH -DMW_STDIO
 	
 libmw.so: memwatch.o
-	$(CXX) -shared -o $$@ $$<
+	$(TARGET_CXX) -shared -o $$@ $$<
 endef
 
 define Package/libutils/install

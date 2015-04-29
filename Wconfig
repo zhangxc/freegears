@@ -15,6 +15,9 @@ config TOOLPREFIX_X86
 config TOOLPREFIX_MIPS_UCLIBC_LINUX
 	bool
 
+config TOOLPREFIX_ARM_GLIBC_LINUX
+	bool
+
 choice
 	prompt "Default target"
 	default UNITY
@@ -40,6 +43,12 @@ config TARGET_MISSION_PEAK
 	help
 	  Aruba Apache Peak targets for Atheros AR7161
 
+config TARGET_LENA
+	bool "Lena River"
+	select ARCH_ARM
+	select TOOLPREFIX_ARM_GLIBC_LINUX
+	help
+	  Lena target for HiSilicon Hi3716c
 endchoice
 
 source app/Wconfig

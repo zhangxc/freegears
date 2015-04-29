@@ -56,10 +56,12 @@ distclean:
 #
 # prepareation
 #
-$(CFG_BUILD_DIR) $(CFG_STG_DIR) $(CFG_TARGET_ROOT) $(CFG_STAMP_DIR):
-	install -d $@
+$(HOST_BUILD_DIR) $(HOST_STG_DIR) $(HOST_TARGET_DIR) \
+	$(TARGET_BUILD_DIR) $(TARGET_STG_DIR) $(TARGET_DIR):
+	mkdir -p $@
 
-prepare: $(CFG_BUILD_DIR) $(CFG_STG_DIR) $(CFG_TARGET_ROOT) $(CFG_STAMP_DIR)
+prepare: $(HOST_BUILD_DIR) $(HOST_STG_DIR) $(HOST_TARGET_DIR) \
+	 $(TARGET_BUILD_DIR) $(TARGET_STG_DIR) $(TARGET_DIR)
 
 #
 # pkg
