@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "hashtable.h"
+#include "app/hashtable.h"
 
 static int pointercmp(const void *pointer1, const void *pointer2);
 static unsigned long pointerHashFunction(const void *pointer);

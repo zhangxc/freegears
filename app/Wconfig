@@ -2,8 +2,8 @@ menu "Applications"
 
 comment "first-party libraries"
 
-config APP_utils
-	bool "libutils"
+config APP_libapp
+	bool "libapp"
 	def_bool y
 
 comment "first-party applications"

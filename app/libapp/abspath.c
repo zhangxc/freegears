@@ -1,6 +1,6 @@
-#include "wrapper.h"
-#include "abspath.h"
-#include "usage.h"
+#include "app/wrapper.h"
+#include "app/abspath.h"
+#include "app/usage.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>

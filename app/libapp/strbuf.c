@@ -1,7 +1,7 @@
-#include "wrapper.h"
-#include "config.h"
-#include "strbuf.h"
-#include "utils.h"
+#include "app/wrapper.h"
+#include "app/config.h"
+#include "app/strbuf.h"
+#include "app/utils.h"
 
 #include <linux/limits.h>
 #include <sys/types.h>
@@ -240,7 +240,7 @@ void strbuf_expand(struct strbuf *sb, const char *format, expand_fn_t fn,
 		   void *context)
 {
 	for (;;) {
-		const char *percent;
+		char *percent;
 		size_t consumed;
 
 		percent = strchrnul(format, '%');

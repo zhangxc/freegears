@@ -14,9 +14,9 @@
  *   user.name = Snake
  *   user.email = i@g.cn
  */
-#include "wrapper.h"
-#include "config.h"
-#include "strbuf.h"
+#include "app/wrapper.h"
+#include "app/config.h"
+#include "app/strbuf.h"
 
 #include <linux/limits.h>
 #include <sys/mman.h>

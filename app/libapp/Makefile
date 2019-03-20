@@ -2,10 +2,18 @@ TOPDIR=$(CURDIR)/../..
 include $(TOPDIR)/include/config.mk
 include $(TOPDIR)/include/app.mk
 
-TARGET_CFLAGS	+= -fPIC
-TARGET_CXXFLAGS	+= -fPIC
+TARGET_CFLAGS	+= -fPIC -I.
+TARGET_CXXFLAGS	+= $(TARGET_CFLAGS)
 TARGET_LDLIBS	+= -lrt
-TARGET		= libfgutils.so libmw.so
+TARGET		= libapp.so
+OBJS		= abspath.o \
+		  config.o \
+		  strbuf.o \
+		  usage.o \
+		  wrapper.o \
+		  eloop.o \
+		  hashtable.o \
+		  crc32.o
 
 define Package/libutils
 PKG_NAME	:= libutils
@@ -14,8 +22,7 @@ TITLE		:= Library of massive compact utilities
 endef
 
 define Package/libutils/targets
-libfgutils.so: abspath.o config.o strbuf.o usage.o wrapper.o eloop.o \
-		hashtable.o crc32.o
+$(TARGET): $(OBJS)
 	$(TARGET_LDSHARED) -o $$@ $$^ $(TARGET_LDFLAGS) $(TARGET_LOADLIBES)
 
 dlshared.so: dlshared.o
